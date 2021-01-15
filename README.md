@@ -1,28 +1,86 @@
-# ATL
+#ANGULAR+ TAILWINDCSS
+-------------------------------------------------------------------
+ng new ATL
+cd ATL
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.6.
+//what the options i used
+? Would you like to add Angular routing? Yes
+? Which stylesheet format would you like to use?
+> SCSS
 
-## Development server
+code . 
+// :) I know you use it
+#let's begin the magic
+-------------------------------------------------------------------
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+npm i tailwindcss autoprefixer postcss postcss-import postcss-loader postcss-scss -D
+ng add ngx-build-plus
 
-## Code scaffolding
+npx tailwind init --full -p
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+//tailwind.config.js 
+//files which can overwrite/modify css utilities
 
-## Build
+ purge: {
+    enabled: false,// true, Enable it in production
+    content: ['./src/**/*.html', './src/**/*.ts', './src/**/**/*.html', './src/**/**/*.ts'],
+  },
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+//postcss.config.css
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+create a file webpack.config.js
+//webpack.config.js
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+module.exports = {
+    module: {
+      rules: [
+        {
+          test: /\.scss$/,
+          loader: 'postcss-loader',
+          options: {
+              postcssOptions:{
+                ident: 'postcss',
+                syntax: 'postcss-scss',
+                plugins: () => [
+                  require('postcss-import'),
+                  require('tailwindcss'),
+                  require('autoprefixer'),
+                ]
+            }
+          }
+        }
+      ]
+    }
+  };
 
-## Further help
+#Edit angular.json in below sections
+-------------------------------------------------------------------
+Build
+Serve
+Test
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-"# ATL" 
+"build": {
+          "builder": "ngx-plus bla bla",
+          "options": {  
+          "extraWebpackConfig": "webpack.config.js",  
+	----
+
+"serve": {
+          "builder": "ngx-plus bla bla",
+          "options": {
+            "extraWebpackConfig": "webpack.config.js",  
+	----
+
+"test":{
+          "builder": "ngx-plus bla bla",
+          "options": {
+            "extraWebpackConfig": "webpack.config.js",  
+	----
+
+#STYLE.CSS
+-------------------------------------------------------------------
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
